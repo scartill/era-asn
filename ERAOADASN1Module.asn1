@@ -9,7 +9,7 @@ BEGIN
 -- Расширяет optionalAdditionalData.OID, выделенный CEN для
 -- ЭРА-ГЛОНАСС. Последующие версии формата должны быть
 -- обратно совместимыми с предыдущими.
-ERADataFormatId::= INTEGER (1)
+ERADataFormatId ::= INTEGER (2)
 
 -- Блок дополнительных данных "ЭРА-ГЛОНАСС"
 -- crashSeverityASI15 - значение индекса ASI15,
