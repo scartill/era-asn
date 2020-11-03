@@ -1,0 +1,70 @@
+ERAOADASN1Module
+
+DEFINITIONS
+
+AUTOMATIC TAGS ::=
+BEGIN
+
+-- версия формата блока дополнительных данных "ЭРА-ГЛОНАСС"
+-- Расширяет optionalAdditionalData.OID, выделенный CEN для
+-- ЭРА-ГЛОНАСС. Последующие версии формата должны быть
+-- обратно совместимыми с предыдущими.
+ERADataFormatId::= INTEGER (1)
+
+-- Блок дополнительных данных "ЭРА-ГЛОНАСС"
+-- crashSeverityASI15 - значение индекса ASI15,
+-- умноженное на 100
+-- diagnosticResult - см. DiagnosticResult
+-- crashlnfo - см. Crashlnfo.
+-- Расширяемый.
+ERAAdditionalData ::= SEQUENCE {
+    crashSeverityASI15 INTEGER(0..2047) OPTIONAL,
+    diagnosticResult DiagnosticResult OPTIONAL,
+    crashInfo CrashInfo OPTIONAL,
+    coordinateSystemType CoordinateSystemType DEFAULT wgs84,
+    ...
+}
+
+-- Блок данных, характериризующих состояние УСВ
+DiagnosticResult ::= SEQUENCE {
+    micConnectionFailure BOOLEAN OPTIONAL,
+    micFailure BOOLEAN OPTIONAL,
+    rightSpeakerFailure BOOLEAN OPTIONAL,
+    leftSpeakerFailure BOOLEAN OPTIONAL,
+    speakersFailure BOOLEAN OPTIONAL,
+    ignitionLineFailure BOOLEAN OPTIONAL,
+    uimFailure BOOLEAN OPTIONAL,
+    statusIndicatorFailure BOOLEAN OPTIONAL,
+    batteryFailure BOOLEAN OPTIONAL,
+    batteryVoltageLow BOOLEAN OPTIONAL,
+    crashSensorFailure BOOLEAN OPTIONAL,
+    firmwareImageCorruption BOOLEAN OPTIONAL,
+    commModulelnterfaceFailure BOOLEAN OPTIONAL,
+    gnssReceiverFailure BOOLEAN OPTIONAL,
+    raimProblem BOOLEAN OPTIONAL,
+    gnssAntennaFailure BOOLEAN OPTIONAL,
+    commModuleFailure BOOLEAN OPTIONAL,
+    eventsMemoryOverflow BOOLEAN OPTIONAL,
+    crashProfileMemoryOverflow BOOLEAN OPTIONAL,
+    otherCriticalFailures BOOLEAN OPTIONAL,
+    otherNotCriticalFailures BOOLEAN OPTIONAL
+}
+
+-- Блок данных, классифицирующий ДТП
+CrashInfo ::= SEQUENCE {
+    crashFront BOOLEAN OPTIONAL,
+    crashLeft BOOLEAN OPTIONAL,
+    crashRight BOOLEAN OPTIONAL,
+    crashRear BOOLEAN OPTIONAL,
+    crashRollover BOOLEAN OPTIONAL,
+    crashSide BOOLEAN OPTIONAL,
+    crashFrontOrSide BOOLEAN OPTIONAL,
+    crashAnotherType BOOLEAN OPTIONAL
+}
+
+CoordinateSystemType ::= ENUMERATED {
+    wgs84 (1),
+    pz90 (2)
+}
+
+END.

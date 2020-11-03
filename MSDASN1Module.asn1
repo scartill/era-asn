@@ -1,0 +1,142 @@
+MSDASN1Module
+
+DEFINITIONS
+
+AUTOMATIC TAGS ::=
+BEGIN
+
+-- версия спецификации МНД
+Currentld ::= INTEGER (1)
+
+-- ECallMessage является информационным элементом верхнего 
+-- уровня и поддерживает только один тип сообщения (msd)
+-- Элементы:
+-- id: формат данных МНД устанавливается в 1
+-- msd: МНД, передающихся со стороны АС, исключая ID
+ECallMessage ::= SEQUENCE {
+    id INTEGER (0.. 255),
+    msd MSDMessage
+}
+
+-- Сообщение, передающееся со стороны АС (исключая ID)
+-- Элементы:
+-- msdStructure: Главная структура МНД
+-- optionalAdditionalData: Дополнительные данные
+-- Расширяемо в следующих версиях на этом уровне
+MSDMessage ::= SEQUENCE {
+    msdStructure MSDStructure,
+    optionalAdditionalData AdditionalData OPTIONAL,
+    ...
+}
+
+-- Главная структура МНД, за исключением дополнительных данных
+-- Элементы:
+-- messageldentifier: Идентификатор сообщения
+-- control: см. ControlType
+-- vehicleldentificationNumber: см. VIN
+-- vehiclePropulsionStorageType: см. VehiclePropulsionStorageType
+-- timestamp: метка времени
+-- vehicleLocation: см. VehicleLocation
+-- vehicleDirection: Направление движения
+-- recentVehicleLocationN1: отклонение от текущего положения
+-- см. VehicleLocationDelta
+-- recentVehicleLocationN2: отклонение от 
+-- recentVehicleLocationN1 см. VehicleLocationDelta
+-- numberOfPassengers: минимально известное число
+-- пристегнутых ремней безопасности
+MSDStructure ::= SEQUENCE {
+    messageIdentifier INTEGER (0 .. 255),
+    control ControlType,
+    vehicleldentificationNumber VIN,
+    vehiclePropulsionStorageType VehiclePropulsionStorageType,
+    timestamp INTEGER (0.. 4294967295),
+    vehicleLocation VehicleLocation,
+    vehicleDirection INTEGER (0 .. 255),
+    recentVehicleLocationN1 VehicleLocationDelta OPTIONAL,
+    recentVehicleLocationN2 VehicleLocationDelta OPTIONAL,
+    numberOfPassengers INTEGER (0.. 255) OPTIONAL,
+    ...
+}
+
+-- ControlType состоит из следующих элементов: 
+-- automaticActivation: true, false
+-- testCall: true, false
+-- positionCanBeTrusted: true, false
+-- vehicleType: см. VehicleType
+ControlType ::= SEQUENCE {
+    automaticActivation BOOLEAN,
+    testCall BOOLEAN,
+    positionCanBeTrusted BOOLEAN,
+    vehicleType VehicleType
+}
+
+-- Определение типа транспортного средства
+VehicleType ::= ENUMERATED {
+    passengerVehicleClassM1 (1),
+    busesAndCoachesClassM2 (2),
+    busesAndCoachesClassM3 (3),
+    lightCommercialVehiclesClassN1 (4),
+    heavyDutyVehiclesClassN2 (5),
+    heavyDutyVehiclesClassN3 (6),
+    motorcyclesClassL1e (7),
+    motorcyclesClassL2e (8),
+    motorcyclesClassL3e (9),
+    motorcyclesClassL4e (10),
+    motorcyclesClassL5e (11),
+    motorcyclesClassL6e (12),
+    motorcyclesClassL7e (13),
+    ...
+}
+
+--VIN
+VIN ::= SEQUENCE {
+    isowmi PrintableString (SIZE (3)) (FROM ("A" .. "H" | "J" .. "N" | "P" | "R" .. "Z" | "0" .. "9")),
+    isovds PrintableString (SIZE (6)) (FROM ("A" .. "H" | "J" .. "N" | "P" | "R" .. "Z" | "0" .. "9")),
+    isovisModelyear PrintableString (SIZE (1)) (FROM ("A" .. "H" | "J" .. "N" | "P" | "R" .. "Z" | "0" .. "9")),
+    isovisSeqPlant PrintableString (SIZE (7)) (FROM ("A" .. "H" | "J" .. "N" | "P" | "R" .. "Z" | "0" .. "9"))
+}
+
+-- VehiclePropulsionStorageType :
+-- Тип топлива (источника энергии) транспортного средства
+VehiclePropulsionStorageType ::= SEQUENCE {
+    gasolineTankPresent BOOLEAN DEFAULT FALSE,
+    dieselTankPresent BOOLEAN DEFAULT FALSE,
+    compressedNaturalGas BOOLEAN DEFAULT FALSE,
+    liquidPropaneGas BOOLEAN DEFAULT FALSE,
+    electricEnergyStorage BOOLEAN DEFAULT FALSE,
+    hydrogenStorage BOOLEAN DEFAULT FALSE,
+    ...
+}
+
+-- VehicleLocation:
+-- Текущее местоположение транспортного средства
+-- Элементы:
+-- Широта - отведены 32 бита (4 октета)
+-- Долгота - отведены 32 бита (4 октета)
+VehicleLocation ::= SEQUENCE {
+    positionLatitude INTEGER(-2147483648.. 2147483647),
+    positionLongitude INTEGER(-2147483648.. 2147483647)
+}
+
+-- VehicleLocationDelta:
+-- Местоположение транспортного средства перед определением
+-- события ДТП
+VehicleLocationDelta ::= SEQUENCE {
+    latitudeDelta INTEGER (-512.. 511),
+    longitudeDelta INTEGER (-512.. 511)
+}
+
+-- AdditionalData:
+-- Дополнительные данные, закодированные как отдельное
+-- определение
+-- Элементы:
+-- oid: идентификатор объекта, который определяет формат
+-- и назначение данных
+-- data: дополнительные данные в соответствии с форматом,
+-- определенным oid
+AdditionalData ::= SEQUENCE {
+    oid RELATIVE-OID,
+    data OCTET STRING
+}
+
+END

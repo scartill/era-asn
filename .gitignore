@@ -1,0 +1,7 @@
+MSDASN1Module*
+!MSDASN1Module.asn1
+
+ERAOADASN1Module*
+!ERAOADASN1Module.asn1
+
+*.beam
