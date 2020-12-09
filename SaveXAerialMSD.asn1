@@ -1,0 +1,38 @@
+-- Описание минимального набора данных службы
+-- спутниковой "кнопки жизни" для терминала для
+-- воздушных судов
+SaveXAerialMSD
+
+DEFINITIONS AUTOMATIC TAGS ::= BEGIN
+
+IMPORTS VehicleLocation FROM SaveXCommon
+        VehicleLocationDelta FROM SaveXCommon
+        AdditionalData FROM SaveXCommon
+        CraftDirection FROM SaveXCommon;
+
+-- Сообщение
+SaveXAerialMSD ::= SEQUENCE {
+    msd SaveXAerialStructure,
+    optionalAdditionalData AdditionalData OPTIONAL,
+    ...
+}
+
+SaveXAerialStructure ::= SEQUENCE {
+    -- Метка времени
+    timestamp INTEGER (0.. 4294967295),
+
+    -- Идентификатор воздушного судна (24-битный идентификатор ИКАО)
+    icaoID OCTET STRING,
+
+    -- Текущее местонахождение
+    aircraftLocation VehicleLocation,
+
+    -- Курс  
+    aircraftDirection CraftDirection,
+
+    -- Предыдущие местоположения
+    recentAircraftLocationN1 VehicleLocationDelta OPTIONAL,
+    recentAircraftLocationN2 VehicleLocationDelta OPTIONAL
+}
+
+END.

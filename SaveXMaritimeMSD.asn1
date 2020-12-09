@@ -1,0 +1,39 @@
+-- Описание минимального набора данных службы
+-- спутниковой "кнопки жизни" для терминала для
+-- морских и речных судов
+SaveXMaritimeMSD
+
+DEFINITIONS AUTOMATIC TAGS ::= BEGIN
+
+IMPORTS VehicleLocation FROM SaveXCommon
+        VehicleLocationDelta FROM SaveXCommon
+        AdditionalData FROM SaveXCommon
+        CraftDirection FROM SaveXCommon;
+
+-- Сообщение
+SaveXMaritimeMSD ::= SEQUENCE {
+    msd SaveXMaritimeStructure,
+    optionalAdditionalData AdditionalData OPTIONAL,
+    ...
+}
+
+-- Минимальный набор данных
+SaveXMaritimeStructure ::= SEQUENCE {
+    -- Метка времени
+    timestamp INTEGER (0.. 4294967295),
+
+    -- Идентификатор судна (идентификатор АИС)
+    icaoID OCTET STRING,
+
+    -- Текущее местонахождение
+    vesselLocation VehicleLocation,
+
+    -- Курс  
+    vesselDirection CraftDirection,
+
+    -- Предыдущие местоположения
+    recentVesselLocationN1 VehicleLocationDelta OPTIONAL,
+    recentVesselLocationN2 VehicleLocationDelta OPTIONAL
+}
+
+END.

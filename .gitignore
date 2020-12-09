@@ -4,4 +4,19 @@ MSDASN1Module*
 ERAOADASN1Module*
 !ERAOADASN1Module.asn1
 
+SaveXCommon*
+!SaveXCommon.asn1
+
+SaveXPersonalMSD*
+!SaveXPersonalMSD.asn1
+
+SaveXAerialMSD*
+!SaveXAerialMSD.asn1
+
+SaveXPersonalMSD*
+!SaveXPersonalMSD.asn1
+
+SaveXMSD*
+!SaveXMSD.asn1
+
 *.beam

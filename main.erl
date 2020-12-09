@@ -1,14 +1,15 @@
 -module(main).
 
+-include("SaveXCommon.hrl").
 -include("MSDASN1Module.hrl").
 -include("ERAOADASN1Module.hrl").
 
--export([run/0]).
+-export([auto_size/0]).
 
 era_oid() ->
     "1.4.2".
 
-aux_record() ->
+aux_auto_record() ->
     #'ERAAdditionalData' {
         crashSeverityASI15 = 1024,
         diagnosticResult = #'DiagnosticResult' {
@@ -47,7 +48,7 @@ aux_record() ->
         coordinateSystemType = pz90
     }.
 
-full_record(AuxBin) ->
+full_auto_record(AuxBin) ->
     #'ECallMessage' {
         id = 1,
         msd = #'MSDMessage' {
@@ -82,7 +83,7 @@ full_record(AuxBin) ->
         }
     }.
 
-run() ->
-    {ok, AuxBin} = 'ERAOADASN1Module':encode('ERAAdditionalData', aux_record()),
-    {ok, Bin} = 'MSDASN1Module':encode('ECallMessage', full_record(AuxBin)),
+auto_size() ->
+    {ok, AuxBin} = 'ERAOADASN1Module':encode('ERAAdditionalData', aux_auto_record()),
+    {ok, Bin} = 'MSDASN1Module':encode('ECallMessage', full_auto_record(AuxBin)),
     byte_size(Bin).

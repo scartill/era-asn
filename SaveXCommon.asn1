@@ -1,0 +1,45 @@
+SaveXCommon
+
+DEFINITIONS AUTOMATIC TAGS ::= BEGIN
+
+-- VehicleLocation:
+-- Текущее местоположение транспортного средства
+-- Элементы:
+-- Широта - отведены 32 бита (4 октета)
+-- Долгота - отведены 32 бита (4 октета)
+VehicleLocation ::= SEQUENCE {
+    positionLatitude INTEGER(-2147483648.. 2147483647),
+    positionLongitude INTEGER(-2147483648.. 2147483647)
+}
+
+-- VehicleLocationDelta:
+-- Местоположение транспортного средства перед передачей сообщения
+VehicleLocationDelta ::= SEQUENCE {
+    latitudeDelta INTEGER (-512.. 511),
+    longitudeDelta INTEGER (-512.. 511)
+}
+
+-- Курс судна
+CraftDirection ::= SEQUENCE {
+    -- Магнитный или истинный
+    magnetic BOOLEAN,
+
+    -- Азимут в градусах
+    direction INTEGER(0.. 359)
+}
+
+-- AdditionalData:
+-- Дополнительные данные, закодированные как отдельное
+-- определение
+-- Элементы:
+-- oid: идентификатор объекта, который определяет формат
+-- и назначение данных
+-- data: дополнительные данные в соответствии с форматом,
+-- определенным oid
+AdditionalData ::= SEQUENCE {
+    oid RELATIVE-OID,
+    data OCTET STRING
+}
+
+
+END.

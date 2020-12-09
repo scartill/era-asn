@@ -1,0 +1,30 @@
+-- Описание минимального объема данных службы
+-- спутниковой "кнопки жизни" для персонального терминала
+SaveXPersonalMSD
+
+DEFINITIONS AUTOMATIC TAGS ::= BEGIN
+
+IMPORTS VehicleLocation FROM SaveXCommon
+        VehicleLocationDelta FROM SaveXCommon
+        AdditionalData FROM SaveXCommon;
+
+-- Сообщение
+SaveXPersonalMSD ::= SEQUENCE {
+    msd SaveXPersonalStructure,
+    optionalAdditionalData AdditionalData OPTIONAL,
+    ...
+}
+
+-- Минимальный набор данных
+SaveXPersonalStructure ::= SEQUENCE {
+    -- Метка времени
+    timestamp INTEGER (0.. 4294967295),
+
+    -- Идентификатор пользователя (UUID)
+    uuid OCTET STRING,
+
+    -- Текущее местонахождение
+    deviceLocation VehicleLocation
+}
+
+END.

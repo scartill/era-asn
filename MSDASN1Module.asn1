@@ -1,9 +1,10 @@
 MSDASN1Module
 
-DEFINITIONS
+DEFINITIONS AUTOMATIC TAGS ::= BEGIN
 
-AUTOMATIC TAGS ::=
-BEGIN
+IMPORTS VehicleLocation FROM SaveXCommon
+        VehicleLocationDelta FROM SaveXCommon
+        AdditionalData FROM SaveXCommon;
 
 -- версия спецификации МНД
 Currentld ::= INTEGER (1)
@@ -52,8 +53,12 @@ MSDStructure ::= SEQUENCE {
     timestamp INTEGER (0.. 4294967295),
     vehicleLocation VehicleLocation,
     vehicleDirection INTEGER (0 .. 255),
+
+    -- Местоположение транспортного средства перед определением
+    -- события ДТП
     recentVehicleLocationN1 VehicleLocationDelta OPTIONAL,
     recentVehicleLocationN2 VehicleLocationDelta OPTIONAL,
+
     numberOfPassengers INTEGER (0.. 255) OPTIONAL,
     ...
 }
@@ -106,37 +111,6 @@ VehiclePropulsionStorageType ::= SEQUENCE {
     electricEnergyStorage BOOLEAN DEFAULT FALSE,
     hydrogenStorage BOOLEAN DEFAULT FALSE,
     ...
-}
-
--- VehicleLocation:
--- Текущее местоположение транспортного средства
--- Элементы:
--- Широта - отведены 32 бита (4 октета)
--- Долгота - отведены 32 бита (4 октета)
-VehicleLocation ::= SEQUENCE {
-    positionLatitude INTEGER(-2147483648.. 2147483647),
-    positionLongitude INTEGER(-2147483648.. 2147483647)
-}
-
--- VehicleLocationDelta:
--- Местоположение транспортного средства перед определением
--- события ДТП
-VehicleLocationDelta ::= SEQUENCE {
-    latitudeDelta INTEGER (-512.. 511),
-    longitudeDelta INTEGER (-512.. 511)
-}
-
--- AdditionalData:
--- Дополнительные данные, закодированные как отдельное
--- определение
--- Элементы:
--- oid: идентификатор объекта, который определяет формат
--- и назначение данных
--- data: дополнительные данные в соответствии с форматом,
--- определенным oid
-AdditionalData ::= SEQUENCE {
-    oid RELATIVE-OID,
-    data OCTET STRING
 }
 
 END

@@ -1,0 +1,70 @@
+-- Описание минимального набора данных службы
+-- спутниковой "кнопки жизни"
+SaveXMSD
+
+DEFINITIONS AUTOMATIC TAGS ::= BEGIN
+
+IMPORTS
+    SaveXPersonalMSD FROM SaveXPersonalMSD
+    SaveXAerialMSD FROM SaveXAerialMSD
+    SaveXMaritimeMSD FROM SaveXMaritimeMSD
+
+-- Сообщения для автотранспорта, совметимые с "ЭРА-ГЛОНАСС"
+    ECallMessage FROM MSDASN1Module
+    ERADataFormatId FROM ERAOADASN1Module
+    ERAAdditionalData FROM ERAOADASN1Module;
+
+ERAAddOnData ::= SEQUENCE {
+    dataFormatID ERADataFormatId,
+    data ERAAdditionalData
+}
+
+-- Описывает полное сообщение "ЭРА-ГЛОНАСС"
+SaveXAutomotiveMSD ::= SEQUENCE  {
+    eCallMessage ECallMessage,
+    eraAddOn ERAAddOnData OPTIONAL
+}
+
+-- Идентификатор едиственного сообщения
+CurrentSaveXID ::= INTEGER(1)
+
+-- Прикладные данные Save-X
+SaveXAppData ::= CHOICE {
+    -- персональный вариант
+    personal SaveXPersonalMSD,
+
+    -- автомобильный вариант
+    automotive SaveXAutomotiveMSD,
+
+    -- вариант для ВС/БАС
+    aerial SaveXAerialMSD,
+
+    -- вариант для морских и речных судов
+    maritime SaveXMaritimeMSD,
+
+    -- расширяемый
+    ...
+}
+
+-- Служебные данные
+SaveXServiceData ::= SEQUENCE {
+    -- Признак тестового сообщения
+    testing BOOLEAN DEFAULT FALSE,
+
+    -- расширяемый
+    ...
+}
+
+-- Общее описание минимального набора данных Save-X
+SaveXMessage ::= CHOICE {
+    -- Идентификатор сообщения
+    id CurrentSaveXID,
+    
+    -- Прикладные данные Save-X
+    appData SaveXAppData,
+
+    -- Служебные данные
+    serviceData SaveXServiceData
+}
+
+END.
