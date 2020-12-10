@@ -1,10 +1,12 @@
-# eCALL, ERA-GLONASS and Save-X ASN.1 Schemas
+# eCall, ERA-GLONASS and Save-X ASN.1 Schemas
 
 ## Compile and test using Erlang
 
-```erlang
+```bash
 $ erl
+```
 
+```erlang
 1> c(savexct).
 {ok, savexct}
 
