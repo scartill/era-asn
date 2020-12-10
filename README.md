@@ -2,9 +2,11 @@
 
 ## Compile and test using Erlang
 
-```erlang
+```bash
 $ erl
+```
 
+```erlang
 1> c(savexct).
 {ok, savexct}
 
