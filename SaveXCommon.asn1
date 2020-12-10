@@ -1,3 +1,4 @@
+-- Общие типы данных
 SaveXCommon
 
 DEFINITIONS AUTOMATIC TAGS ::= BEGIN
