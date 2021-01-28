@@ -21,8 +21,10 @@ SaveXAerialStructure ::= SEQUENCE {
     -- Метка времени
     timestamp INTEGER (0.. 4294967295),
 
-    -- Идентификатор воздушного судна (24-битный идентификатор ИКАО)
-    icaoID OCTET STRING,
+    -- Серийный номер в соотвествии с ANSI/CTA-2063-A
+    icaoMfrCode PrintableString (SIZE (4)) (FROM ("A" .. "H" | "J" .. "N" | "P" .. "Z" | "0" .. "9")),
+    lenthCode PrintableString (SIZE (4)) (FROM ("A" .. "F" | "1" .. "9")),
+    serial PrintableString (SIZE (15)) (FROM ("A" .. "H" | "J" .. "N" | "P" .. "Z" | "0" .. "9" | " ")),
 
     -- Текущее местонахождение
     aircraftLocation VehicleLocation,
@@ -32,7 +34,10 @@ SaveXAerialStructure ::= SEQUENCE {
 
     -- Предыдущие местоположения
     recentAircraftLocationN1 VehicleLocationDelta OPTIONAL,
-    recentAircraftLocationN2 VehicleLocationDelta OPTIONAL
+    recentAircraftLocationN2 VehicleLocationDelta OPTIONAL,
+
+    -- Идентификатор воздушного судна (24-битный идентификатор ИКАО)
+    icaoID OCTET STRING OPTIONAL
 }
 
 END.
